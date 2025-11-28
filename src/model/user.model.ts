@@ -5,6 +5,12 @@ export class UserRegisterRequest {
   confirm_password: string;
 }
 
+export class UserLoginRequest {
+  email?: string;
+  username?: string;
+  password: string;
+}
+
 export class UserResponse {
   id: string;
   email: string;

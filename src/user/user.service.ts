@@ -1,15 +1,22 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma/prisma.service';
 import { ValidationService } from '../common/validation/validation.service';
-import { UserRegisterRequest, UserResponse } from '../model/user.model';
+import {
+  UserLoginRequest,
+  UserRegisterRequest,
+  UserResponse,
+} from '../model/user.model';
 import { UserValidation } from './user.validation';
 import bcrypt from 'bcrypt';
+import { email } from 'zod';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     private prismaService: PrismaService,
     private validationService: ValidationService,
+    private jwtService: JwtService,
   ) {}
 
   async register(request: UserRegisterRequest): Promise<UserResponse> {
@@ -52,6 +59,50 @@ export class UserService {
       id: register.id,
       email: register.email,
       username: register.username,
+    };
+  }
+
+  async login(request: UserLoginRequest): Promise<UserResponse> {
+    const loginRequest: UserLoginRequest = this.validationService.validate(
+      UserValidation.LOGIN,
+      request,
+    );
+
+    const findUser = await this.prismaService.user.findFirst({
+      where: {
+        OR: [
+          {
+            email: loginRequest.email,
+          },
+          {
+            username: loginRequest.username,
+          },
+        ],
+      },
+    });
+
+    if (!findUser) {
+      throw new HttpException('Username/email or password is wrong!', 403);
+    }
+
+    const checkPassword = await bcrypt.compare(
+      loginRequest.password,
+      findUser.password,
+    );
+
+    if (!checkPassword) {
+      throw new HttpException('Username/email or password is wrong!', 403);
+    }
+
+    const payload = {
+      id: findUser.id,
+      username: findUser.username,
+      email: findUser.email,
+    };
+
+    return {
+      ...payload,
+      token: await this.jwtService.signAsync(payload),
     };
   }
 }
