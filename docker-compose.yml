@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+      MONGO_INITDB_DATABASE: youapp_db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+
+volumes:
+  mongo_data:
+  mongo_config:
