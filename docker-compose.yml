@@ -1,20 +1,20 @@
 version: '3.9'
 
 services:
-  mongo:
-    image: mongo:7
+  mongodb:
+    image: bitnami/mongodb:latest
     container_name: mongodb
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root123
-      MONGO_INITDB_DATABASE: youapp_db
+    restart: always
     ports:
       - '27017:27017'
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=localhost
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=kuncirahasia123
+      - MONGODB_ROOT_PASSWORD=root123
+      - MONGODB_REPLICA_SET_NAME=rs0
     volumes:
-      - mongo_data:/data/db
-      - mongo_config:/data/configdb
+      - mongo_data_bitnami:/bitnami/mongodb
 
 volumes:
-  mongo_data:
-  mongo_config:
+  mongo_data_bitnami:
