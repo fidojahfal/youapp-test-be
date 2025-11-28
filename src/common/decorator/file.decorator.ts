@@ -26,8 +26,6 @@ export const UploadedPhotoValidated = createParamDecorator(
       return file;
     };
 
-    return {
-      photo: validatePhoto(file),
-    };
+    return validatePhoto(file);
   },
 );
