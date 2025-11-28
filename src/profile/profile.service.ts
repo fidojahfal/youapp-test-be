@@ -112,4 +112,22 @@ export class ProfileService {
       profile: this.toProfileJson(profile.profile),
     };
   }
+
+  async getProfile(user: UserResponse): Promise<ProfileResponse> {
+    const profile = await this.prismaService.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+
+    if (!profile) {
+      throw new HttpException('User profile not found!', 404);
+    }
+
+    return {
+      id: profile.id,
+      username: profile.username,
+      profile: this.toProfileJson(profile?.profile),
+    };
+  }
 }

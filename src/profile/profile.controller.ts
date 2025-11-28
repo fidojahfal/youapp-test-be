@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadedPhotoValidated } from '../common/decorator/file.decorator';
@@ -19,6 +19,17 @@ export class ProfileController {
     @Body() request: CreateProfileRequest,
   ): Promise<WebResponse<ProfileResponse>> {
     const result = await this.profileService.create(user, request, photo);
+
+    return {
+      data: result,
+    };
+  }
+
+  @Get('/getProfile')
+  async getProfile(
+    @Auth() user: UserResponse,
+  ): Promise<WebResponse<ProfileResponse>> {
+    const result = await this.profileService.getProfile(user);
 
     return {
       data: result,
