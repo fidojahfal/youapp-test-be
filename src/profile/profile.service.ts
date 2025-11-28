@@ -130,4 +130,48 @@ export class ProfileService {
       profile: this.toProfileJson(profile?.profile),
     };
   }
+
+  async update(
+    user: UserResponse,
+    request: CreateProfileRequest,
+    photo: Express.Multer.File,
+  ): Promise<ProfileResponse> {
+    const profileRequest = this.validationService.validate(
+      ProfileValidation.UPDATE,
+      request,
+    );
+
+    const age = this.calculateAge(profileRequest.birthday);
+    const horoscope = getHoroscope(profileRequest.birthday);
+    const zodiac = getZodiac(profileRequest.birthday);
+    const photoName: string = photo?.filename ?? '';
+
+    const profile = await this.prismaService.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        profile: {
+          ...profileRequest,
+          age,
+          horoscope,
+          zodiac,
+          photo: photoName,
+        },
+      },
+    });
+
+    if (!profile) {
+      if (photo) {
+        await fs.unlink(photo.path);
+      }
+      throw new HttpException('failed to save data!', 500);
+    }
+
+    return {
+      id: profile.id,
+      username: profile.username,
+      profile: this.toProfileJson(profile.profile),
+    };
+  }
 }

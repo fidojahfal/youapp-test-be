@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadedPhotoValidated } from '../common/decorator/file.decorator';
@@ -30,6 +37,20 @@ export class ProfileController {
     @Auth() user: UserResponse,
   ): Promise<WebResponse<ProfileResponse>> {
     const result = await this.profileService.getProfile(user);
+
+    return {
+      data: result,
+    };
+  }
+
+  @Put('/updateProfile')
+  @UseInterceptors(FileInterceptor('photo'))
+  async update(
+    @Auth() user: UserResponse,
+    @UploadedPhotoValidated() photo: Express.Multer.File,
+    @Body() request: CreateProfileRequest,
+  ): Promise<WebResponse<ProfileResponse>> {
+    const result = await this.profileService.update(user, request, photo);
 
     return {
       data: result,

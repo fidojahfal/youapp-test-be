@@ -6,6 +6,14 @@ export class CreateProfileRequest {
   weight: number;
 }
 
+export class UpdateProfileRequest {
+  name: string;
+  gender: string;
+  birthday: string;
+  height: number;
+  weight: number;
+}
+
 export class ProfileResponse {
   id: string;
   username: string;

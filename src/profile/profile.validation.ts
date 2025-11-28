@@ -8,4 +8,12 @@ export class ProfileValidation {
     height: z.coerce.number().int().positive(),
     weight: z.coerce.number().int().positive(),
   });
+
+  static readonly UPDATE = z.object({
+    name: z.string().min(1).max(100),
+    gender: z.string(),
+    birthday: z.iso.datetime(),
+    height: z.coerce.number().int().positive(),
+    weight: z.coerce.number().int().positive(),
+  });
 }
