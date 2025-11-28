@@ -25,3 +25,13 @@ model User {
 
   @@map("users")
 }
+
+model Message {
+  id         String   @id @map("_id") @db.ObjectId
+  senderId   String   @db.ObjectId
+  receiverId String   @db.ObjectId
+  content    String
+  createdAt  DateTime @default(now())
+
+  @@map("messages")
+}
