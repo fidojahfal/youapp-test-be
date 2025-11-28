@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { Auth } from '../common/decorator/auth.decorator';
 import { UserResponse } from '../model/user.model';
@@ -10,5 +10,13 @@ export class ChatController {
   @Post('/sendMessage')
   sendMessage(@Auth() user: UserResponse, @Body() request: SendMessageRequest) {
     return this.chatService.sendMessage(user, request);
+  }
+
+  @Get('/viewMessage')
+  viewMessage(
+    @Auth() user: UserResponse,
+    @Query('userId') anotherUserId: string,
+  ) {
+    return this.chatService.getMessages(user, anotherUserId);
   }
 }

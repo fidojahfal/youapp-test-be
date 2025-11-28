@@ -30,4 +30,16 @@ export class ChatService {
 
     return message;
   }
+
+  async getMessages(user: UserResponse, anotherUserId: string) {
+    return this.prismaService.message.findMany({
+      where: {
+        OR: [
+          { senderId: user.id, receiverId: anotherUserId },
+          { senderId: anotherUserId, receiverId: user.id },
+        ],
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
 }
