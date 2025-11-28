@@ -9,7 +9,7 @@ import path from 'path';
   imports: [
     MulterModule.register({
       storage: diskStorage({
-        destination: path.join(__dirname, '..', '..', 'picture'),
+        destination: path.join(process.cwd(), 'picture'),
         filename: (req, file, cb) => {
           const filename: string = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${file.originalname}`;
           cb(null, filename);
