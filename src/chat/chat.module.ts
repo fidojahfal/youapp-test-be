@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ChatEventsController } from './chat.events';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
   ],
   providers: [ChatService],
-  controllers: [ChatController],
+  controllers: [ChatController, ChatEventsController],
 })
 export class ChatModule {}
