@@ -57,7 +57,6 @@ export class UserService {
 
     return {
       id: register.id,
-      email: register.email,
       username: register.username,
     };
   }
@@ -97,7 +96,6 @@ export class UserService {
     const payload = {
       id: findUser.id,
       username: findUser.username,
-      email: findUser.email,
     };
 
     return {
