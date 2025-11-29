@@ -25,4 +25,23 @@ export class TestService {
       },
     });
   }
+
+  async createProfile() {
+    await this.prismaService.user.update({
+      where: { id: '65df209bd2c7a3f17b67dd01' },
+      data: {
+        profile: {
+          name: 'User 123',
+          gender: 'male',
+          birthday: '2002-12-09T17:00:00.000Z',
+          age: 22,
+          height: 179,
+          weight: 70,
+          horoscope: 'Sagittarius',
+          zodiac: 'Horse',
+          photo: null,
+        },
+      },
+    });
+  }
 }
