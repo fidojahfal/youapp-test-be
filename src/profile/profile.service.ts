@@ -141,6 +141,19 @@ export class ProfileService {
       request,
     );
 
+    const findProfile = await this.prismaService.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+
+    if (!findProfile) {
+      if (photo) {
+        await fs.unlink(photo.path);
+      }
+      throw new HttpException('User profile not found!', 404);
+    }
+
     const age = this.calculateAge(profileRequest.birthday);
     const horoscope = getHoroscope(profileRequest.birthday);
     const zodiac = getZodiac(profileRequest.birthday);
