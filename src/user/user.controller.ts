@@ -6,12 +6,17 @@ import {
   UserResponse,
 } from '../model/user.model';
 import { WebResponse } from '../model/web.model';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('/api')
 export class UserController {
   constructor(private userService: UserService) {}
+
   @Post('/register')
   @HttpCode(200)
+  @ApiOperation({ summary: 'Register new user' })
+  @ApiResponse({ status: 200, type: WebResponse })
   async register(
     @Body() request: UserRegisterRequest,
   ): Promise<WebResponse<UserResponse>> {
@@ -24,6 +29,8 @@ export class UserController {
 
   @Post('/login')
   @HttpCode(200)
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 200, type: WebResponse })
   async login(
     @Body() request: UserLoginRequest,
   ): Promise<WebResponse<UserResponse>> {
