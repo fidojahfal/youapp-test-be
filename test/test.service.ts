@@ -16,9 +16,11 @@ export class TestService {
   async createUser() {
     await this.prismaService.user.create({
       data: {
+        id: '65df209bd2c7a3f17b67dd01',
         email: 'test123@test.com',
         username: 'test123',
-        password: '$2a$13$n4Rw6s9DO3jOfEOlY1EVzOMMBrvJXmoIVkmuuVZwzN94I8VUS1XwS',
+        password:
+          '$2a$13$n4Rw6s9DO3jOfEOlY1EVzOMMBrvJXmoIVkmuuVZwzN94I8VUS1XwS',
         profile: {},
       },
     });

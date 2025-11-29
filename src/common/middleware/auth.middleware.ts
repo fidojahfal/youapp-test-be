@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
     let token = req.headers['authorization'] as string;
 
     if (process.env.NODE_ENV === 'test') {
-      req.user = { id: 'test-user-id', username: 'test123' };
+      req.user = { id: '65df209bd2c7a3f17b67dd01', username: 'test123' };
       return next();
     }
 
