@@ -100,8 +100,6 @@ describe('UserController', () => {
           password: 'testes123',
         });
 
-        console.log(response.body)
-
       expect(response.status).toBe(200);
       expect(response.body.data.id).toBeDefined();
       expect(response.body.data.username).toBe('test123');
